@@ -1,30 +1,48 @@
 package com.appfichaje.aplicacionfichaje.controller;
 
+import com.appfichaje.aplicacionfichaje.model.dto.RecordsResponse;
+import com.appfichaje.aplicacionfichaje.service.RegisterService;
+import com.appfichaje.aplicacionfichaje.service.ShowInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/fichajes")
 public class FichajeController {
 
-    @Autowired
-    private RegistroRepository registroRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private RegisterService registerService;
+
+    @Autowired
+    private ShowInfoService showInfoService;
 
     @PostMapping("/marcar")
-    public ResponseEntity<String> registrarEvento(@RequestParam Long usuarioId, @RequestParam String tipo) {
-        // 1. Buscamos si el usuario existe
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    public ResponseEntity<String> registerEvent(@RequestParam Long usuarioId, @RequestParam String type) {
 
-        // 2. Creamos el registro con la hora actual del sistema
-        Registro nuevoRegistro = new Registro();
-        nuevoRegistro.setUsuario(usuario);
-        nuevoRegistro.setTipo(tipo.toUpperCase());
-        nuevoRegistro.setFechaHora(LocalDateTime.now());
+        registerService.registerEvent(usuarioId,type);
 
-        // 3. Guardamos en la base de datos
-        registroRepository.save(nuevoRegistro);
+        return ResponseEntity.ok("Registro de " + type + " guardado correctamente.");
+    }
 
-        return ResponseEntity.ok("Registro de " + tipo + " guardado correctamente.");
+    @PutMapping("/nuevo-usuario")
+    public ResponseEntity<String> newUser(@RequestParam String name, @RequestParam Long role, @RequestParam Long idCompany) {
+
+        registerService.registerUser(name,role,idCompany);
+
+        return ResponseEntity.ok("Registro de " + name + " guardado correctamente.");
+
+    }
+
+    @GetMapping("/lista-fichajes")
+    public ResponseEntity<List<RecordsResponse>> signingList() {
+
+        List<RecordsResponse> list = showInfoService.getSigningList();
+
+        return ResponseEntity.ok(list);
+
     }
 }

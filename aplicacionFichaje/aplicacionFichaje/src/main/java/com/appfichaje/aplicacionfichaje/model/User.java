@@ -10,15 +10,22 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Usuario extends Audit{
+public class User extends Audit{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "usuario_id")
+    @Column(name = "id")
     private Long id;
 
-    private String nombre;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "dni")
     private String dni;
-    private String rol;
-    private Long empresa_id;
+
+    @Column(name = "role")
+    private Long role;
+
+    @Column(name = "company_id")
+    private Long companyId;
 }

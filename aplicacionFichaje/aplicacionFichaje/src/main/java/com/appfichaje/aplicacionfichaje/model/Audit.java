@@ -17,18 +17,18 @@ import java.time.LocalDateTime;
 public class Audit {
 
     @CreatedBy
-    @Column(name = "createdby")
+    @Column(name = "createdBy")
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "createdat")
+    @Column(name = "createdAt")
     private LocalDateTime createdAt;
 
     @LastModifiedBy
-    @Column(name = "modifiedby")
+    @Column(name = "modifiedBy")
     private String modifiedBy;
 
     @LastModifiedDate
-    @Column(name = "modifiedat")
+    @Column(name = "modifiedAt")
     private LocalDateTime modifiedAt;
 }
